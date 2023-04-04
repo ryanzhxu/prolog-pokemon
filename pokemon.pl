@@ -2,17 +2,39 @@
 pokemon(charmander, fire, 150, 14, 10, 20, [scratch, flamethrower, swords_dance]).
 pokemon(squirtle, water, 180, 8, 18, 15, [tackle, water_gun, iron_defense]).
 pokemon(bulbasaur, grass, 210, 6, 20, 10, [tackle, vine_whip, synthesis]).
+pokemon(pikachu, electric, 180, 10, 15, 30, [quick_attack, spark, electro_ball, thunderbolt]).
+pokemon(charizard, flying, 170, 15, 20, 10, [fire_spin, wing_attack, flamethrower, fire_blast]).
+pokemon(torterra, ground, 190, 9, 15, 10, [earthquake, blazor_leaf, absorb, rock_smash]).
 
 %effectFactor(type of attacker, type of defender, effective factor)
 effectFactor(fire, grass, 2).
 effectFactor(fire, fire, 0.5).
 effectFactor(fire, water, 0.5).
+
 effectFactor(water, fire, 2).
+effectFactor(water, ground, 2).
 effectFactor(water, water, 0.5).
 effectFactor(water, grass, 0.5).
+
+effectFactor(grass, ground, 2).
 effectFactor(grass, water, 2).
+effectFactor(grass, flying, 0.5).
 effectFactor(grass, grass, 0.5).
 effectFactor(grass, fire, 0.5).
+
+effectFactor(electric, water, 2).
+effectFactor(electric, flying, 2).
+effectFactor(electric, ground, 0.5).
+effectFactor(electric, grass, 0.5).
+
+effectFactor(flying, grass, 2).
+effectFactor(flying, electric, 0.5).
+
+effectFactor(ground, fire, 2).
+effectFactor(ground, electric, 2).
+effectFactor(ground, flying, 0.5).
+effectFactor(ground, grass, 0.5).
+
 effectFactor(normal, fire, 1).
 effectFactor(normal, water, 1).
 effectFactor(normal, grass, 1).
@@ -26,6 +48,19 @@ move(vine_whip, grass, 40).
 move(swords_dance, normal, -1).
 move(iron_defense, normal, -2).
 move(synthesis, normal, -3).
+
+move(spark, electric, 40).
+move(electro_ball, electric, 40).
+move(thunderbolt, electric, 40).
+
+move(fire_spin, fire, 40).
+move(wing_attack, flying, 40).
+move(fire_blast, fire, 40).
+
+move(earthquake, ground, 40).
+move(blazor_leaf, grass, 40).
+move(absorb, normal, -1).
+move(rock_smash, ground, 40).
 
 % 
 apply_status(Pokemon, Move, NewPokemon) :-
@@ -67,7 +102,7 @@ damage(Attacker, Defender, Move, Damage) :-
 
 
 start :-
-    write('Choose your first pokemon to fight: [charmander,squirtle,bulbasaur]:'),
+    write('Choose your first pokemon to fight: [charmander,squirtle,bulbasaur, pikachu, charizard, torterra]:'),
     read(Player),
     pokemon(Player,_,PHP,_,_,_,_),
     computer_choose_pokemon_randomly(Computer),
