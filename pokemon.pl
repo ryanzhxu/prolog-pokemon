@@ -17,21 +17,21 @@ pokemon(squirtle, type, water).
 pokemon(squirtle, hp, 180).
 pokemon(squirtle, attack, 8).
 pokemon(squirtle, defense, 18).
-pokemon(squirtle, spped, 15).
+pokemon(squirtle, speed, 15).
 pokemon(squirtle, move, [tackle, water_gun, iron_defense]).
 
 pokemon(bulbasaur, type, grass).
 pokemon(bulbasaur, hp, 210).
 pokemon(bulbasaur, attack, 6).
 pokemon(bulbasaur, defense, 20).
-pokemon(bulbasaur, spped, 10).
+pokemon(bulbasaur, speed, 10).
 pokemon(bulbasaur, move, [tackle, vine_whip, synthesis]).
 
 pokemon(pikachu, type, electric).
 pokemon(pikachu, hp, 180).
 pokemon(pikachu, attack, 10).
 pokemon(pikachu, defense, 15).
-pokemon(pikachu, spped, 30).
+pokemon(pikachu, speed, 30).
 pokemon(pikachu, move, [quick_attack, spark, electro_ball, thunderbolt]).
 
 pokemon(charizard, type, flying).
@@ -39,17 +39,15 @@ pokemon(charizard, type, fire).
 pokemon(charizard, hp, 170).
 pokemon(charizard, attack, 15).
 pokemon(charizard, defense, 20).
-pokemon(charizard, spped, 10).
+pokemon(charizard, speed, 10).
 pokemon(charizard, move, [fire_spin, wing_attack, flamethrower, fire_blast]).
 
 pokemon(torterra, type, ground).
 pokemon(torterra, hp, 190).
 pokemon(torterra, attack, 9).
 pokemon(torterra, defense, 15).
-pokemon(torterra, spped, 10).
+pokemon(torterra, speed, 10).
 pokemon(torterra, move, [earthquake, blazor_leaf, absorb, rock_smash]).
-
-
 
 
 %effectFactor(type of attacker, type of defender, effective factor)
@@ -129,6 +127,9 @@ apply_status(Pokemon, Move, NewPokemon) :-
 
 apply_status(Pokemon, _, Pokemon).
 
+
+
+
 damage(Attacker, Defender, Move, Damage) :-
     pokemon(Attacker, Type_1, HP_1, Attack_1, Defense_1, Speed_1, Moves_1),
     member(Move, Moves_1),
@@ -146,6 +147,30 @@ damage(Attacker, Defender, Move, Damage) :-
     effectFactor(MoveType,Type_2, Multiplier),
     Damage is (BaseDamage*Attack_1)*Multiplier/Defense_2.
 
+
+% redesigned damage function
+damage(Attacker, Defender, Move, Damage) :-
+    pokemon(Attacker, attack, A),
+    pokemon(Attacker, move, M),
+    member(Move, M),
+    move(Move, MoveType, BaseDamage),
+    BaseDamage > 0,
+    pokemon(Defender, defense, D),
+    pokemon(Defender, type, T),
+    effectFactor(MoveType, T, Multiplier),
+    Damage is ((BaseDamage * A) * Multiplier)/D.
+
+% determine which pokemon moves first
+% move_order(pokemon_1, pokemon_2, first_mover, second_mover).
+move_order(Pokemon_1, Pokemon_2, Pokemon_1, Pokemon_2) :-
+    pokemon(Pokemon_1, speed, S1),
+    pokemon(Pokemon_2, speed, S2),
+    S2 < S1.
+
+move_order(Pokemon_1, Pokemon_2, Pokemon_2, Pokemon_1) :-
+    pokemon(Pokemon_1, speed, S1),
+    pokemon(Pokemon_2, speed, S2),
+    S1 < S2.
 
 start :-
     write('Choose your first pokemon to fight: [charmander,squirtle,bulbasaur, pikachu, charizard, torterra]:'),
@@ -185,6 +210,12 @@ c_turn_randomly_choose_move(Computer,Player,Damage) :-
     damage(Computer,Player,Move,Damage).
 
 
+% drafting check win condition 
+% win(turns)
+win(0).
+win(Turns):-
+    Remaining is Turns - 1,
+    win(Remaining).
 
 
 
