@@ -1,10 +1,10 @@
 % pokemon(name, type, HP, attack, defense, speed, list of moves)
-pokemon(charmander, fire, 150, 14, 10, 20, [scratch, flamethrower, swords_dance]).
-pokemon(squirtle, water, 180, 8, 18, 15, [tackle, water_gun, iron_defense]).
-pokemon(bulbasaur, grass, 210, 6, 20, 10, [tackle, vine_whip, synthesis]).
+pokemon(charmander, fire, 150, 14, 10, 20, [scratch, flamethrower, fire_blast, fire_spin]).
+pokemon(squirtle, water, 180, 8, 18, 15, [tackle, water_gun, quick_attack, scratch]).
+pokemon(bulbasaur, grass, 210, 6, 20, 10, [tackle, vine_whip, quick_attack, scratch]).
 pokemon(pikachu, electric, 180, 10, 15, 30, [quick_attack, spark, electro_ball, thunderbolt]).
 pokemon(charizard, flying, 170, 15, 20, 10, [fire_spin, wing_attack, flamethrower, fire_blast]).
-pokemon(torterra, ground, 190, 9, 15, 10, [earthquake, blazor_leaf, absorb, rock_smash]).
+pokemon(torterra, ground, 190, 9, 15, 10, [earthquake, blazor_leaf, quick_attack, rock_smash]).
 
 % pokemon(name, date_type, data)
 pokemon(charmander, type, fire).
