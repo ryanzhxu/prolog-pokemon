@@ -1,10 +1,7 @@
 %move(move name, type, damage)
+move(quick_attack, normal, 20).
 move(scratch, normal, 30).
 move(tackle, normal, 30).
-move(absorb, normal, -1).
-move(swords_dance, normal, -1).
-move(iron_defense, normal, -2).
-move(synthesis, normal, -3).
 
 % water
 move(water_gun, water, 40).
