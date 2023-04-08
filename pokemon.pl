@@ -70,6 +70,35 @@ win(0).
 win(Turns):-
     Remaining is Turns - 1,
     win(Remaining).
+    
+:- assertz(file_search_path(library,pce('prolog/lib'))).
+:- assertz(file_search_path(pce,swi(xpce))).
+:- use_module(library(pce)).
+
+gui :-
+    new(Window, dialog('Pokemon Information')),
+    send(Window, size, size(400, 200)),
+    new(List, menu(pokemon)),
+    send(List, layout, vertical),
+    send(List, multiple_selection, @off),
+    forall(pokemon(Name, _, _, _, _, _, _),
+           send(List, append, Name)),
+    new(ShowButton, button('Show Information', message(@prolog, show_info, List?selection))),
+    send(Window, append, List),
+    send(Window, append, ShowButton),
+    send(Window, append, button('Quit', message(Window, destroy))),
+    send(Window, open),
+    event_loop.
+
+show_info(Pokemon) :-
+    pokemon(Pokemon, Type, HP, Attack, Defense, Speed, Moves),
+    format('Name: ~w~nType: ~w~nHP: ~w~nAttack: ~w~nDefense: ~w~nSpeed: ~w~nMoves: ~w~n',
+           [Pokemon, Type, HP, Attack, Defense, Speed, Moves]).
+    
+event_loop :-
+    repeat,
+    pce_dispatch,
+    fail.
 
 
 
