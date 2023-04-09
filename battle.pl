@@ -4,8 +4,8 @@
 battle(Player, PlayerHP, Computer, ComputerHP) :-
     PlayerHP>0, ComputerHP>0,
     promptMessages(Player, PlayerHP, Computer, ComputerHP),
-    pokemon(Player, _, _, _, _, PlayerSpeed, _),
-    pokemon(Computer, _, _, _, _, ComputerSpeed, _),
+    pokemon(Player, speed, PlayerSpeed),
+    pokemon(Computer, speed, ComputerSpeed),
     fasterGoFirst(Player, PlayerSpeed, PlayerHP, NewPlayerHP, Computer, ComputerSpeed, ComputerHP, NewComputerHP),
     checkIfContinue(Player, PlayerSpeed, NewPlayerHP, Computer, ComputerSpeed, NewComputerHP).
 
@@ -42,24 +42,25 @@ promptMessages(Player, PlayerHP, Computer, ComputerHP) :-
     write('\nPlayer: '), write(Player), write(' | Computer: '), write(Computer),
     format('\nPlayer HP: ~1f | Computer HP: ~1f~n', [PlayerHP, ComputerHP]).
 
-attack(Attacker, Defender, AttackerMove, DefenderOriginalHP, DefenderRemainingHP) :-
+attack(Attacker, Defender, AttackerMove, DefenderOriginalHP, DefenderRemainingHP, IsPlayer) :-
     calculate_damage(Attacker, Defender, AttackerMove, AttackerDamage),
     DefenderRemainingHP is DefenderOriginalHP-AttackerDamage,
-    format('~w used ~w! ~w lost ~1f health.~n', [Attacker, AttackerMove, Defender, AttackerDamage]),
-    format('~w has ~1f health left.~n', [Defender, DefenderRemainingHP]).
+    (IsPlayer == 1 -> (
+    format('~w (ally) used ~w! ~w (enemy) lost ~1f health.~n', [Attacker, AttackerMove, Defender, AttackerDamage]),
+    format('~w (enemy) has ~1f health left.~n', [Defender, DefenderRemainingHP]));
+    format('~w (enemy) used ~w! ~w (ally) lost ~1f health.~n', [Attacker, AttackerMove, Defender, AttackerDamage]),
+    format('~w (ally) has ~1f health left.~n', [Defender, DefenderRemainingHP])).
 
 playersTurn(Player, Computer, ComputerHP, NewComputerHP) :-
-    pokemon(Player, _, _, _, _, _, PlayerMoves),
+    pokemon(Player, moves, PlayerMoves),
     write('\nChoose your move:'),
     writeln(PlayerMoves), read(PlayerMove),
     writeln("\nPlayer's turn:"),
-    attack(Player, Computer, PlayerMove, ComputerHP, NewComputerHP).
+    attack(Player, Computer, PlayerMove, ComputerHP, NewComputerHP, 1).
 
 computersTurn(Computer, Player, PlayerHP, NewPlayerHP) :-
-    computer_choose_move(Computer, ComputerMove),
+    pokemon(Computer, moves, ComputerMoves),
+    random_member(ComputerChosenMove, ComputerMoves),
     writeln("\nComputer's turn:"),
-    attack(Computer, Player, ComputerMove, PlayerHP, NewPlayerHP).
-
-computer_choose_move(Computer, ChosenMove) :-
-    pokemon(Computer, _, _, _, _, _, Moves),
-    random_member(ChosenMove, Moves).
+    attack(Computer, Player, ComputerChosenMove, PlayerHP, NewPlayerHP, 0).
+    

@@ -1,8 +1,9 @@
 :- [pokemon, move, weakness].
 
 calculate_damage(Attacker, Defender, Move, Damage) :-
-    pokemon(Attacker, _, _, AttackerAttack, _, _, _),
-    pokemon(Defender, DefenderType, _, _, DefenderDefense, _, _),
+    pokemon(Attacker, attack, AttackerAttack),
+    pokemon(Defender, type, DefenderType),
+    pokemon(Defender, defense, DefenderDefense),
     move(Move, MoveType, MoveDamage),
     calculate_adjusted(AttackerAttack, MoveType, MoveDamage, DefenderType, DefenderDefense, Adjusted),
     Damage is Adjusted.

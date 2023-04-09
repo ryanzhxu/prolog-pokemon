@@ -1,10 +1,45 @@
-% pokemon(name,     type,     HP,   attack, defense, speed, list of moves)
-pokemon(charmander, fire,     150,  14,     10,     20,     [scratch, flamethrower, fire_blast, fire_spin]).
-pokemon(squirtle,   water,    180,  8,      18,     15,     [tackle, water_gun, quick_attack, scratch]).
-pokemon(bulbasaur,  grass,    210,  6,      20,     10,     [tackle, vine_whip, quick_attack, scratch]).
-pokemon(pikachu,    electric, 180,  10,     15,     30,     [quick_attack, spark, electro_ball, thunderbolt]).
-pokemon(charizard,  flying,   170,  15,     20,     10,     [fire_spin, wing_attack, flamethrower, fire_blast]).
-pokemon(torterra,   ground,   190,  9,      15,     10,     [earthquake, blazor_leaf, quick_attack, rock_smash]).
+%pokemon(Name, Data type, Data).
+pokemon(charmander, type, fire).
+pokemon(charmander, hp, 150).
+pokemon(charmander, attack, 14).
+pokemon(charmander, defense, 10).
+pokemon(charmander, speed, 20).
+pokemon(charmander, moves, [scratch, flamethrower, fire_blast, fire_spin]).
+
+pokemon(squirtle, type, water).
+pokemon(squirtle, hp, 180).
+pokemon(squirtle, attack, 8).
+pokemon(squirtle, defense, 18).
+pokemon(squirtle, speed, 15).
+pokemon(squirtle, moves, [tackle, water_gun, quick_attack, scratch]).
+
+pokemon(bulbasaur, type, grass).
+pokemon(bulbasaur, hp, 210).
+pokemon(bulbasaur, attack, 6).
+pokemon(bulbasaur, defense, 20).
+pokemon(bulbasaur, speed, 10).
+pokemon(bulbasaur, moves, [tackle, vine_whip, quick_attack, scratch]).
+
+pokemon(pikachu, type, electric).
+pokemon(pikachu, hp, 180).
+pokemon(pikachu, attack, 10).
+pokemon(pikachu, defense, 15).
+pokemon(pikachu, speed, 30).
+pokemon(pikachu, moves, [quick_attack, spark, electro_ball, thunderbolt]).
+
+pokemon(charizard, type, flying).
+pokemon(charizard, hp, 170).
+pokemon(charizard, attack, 15).
+pokemon(charizard, defense, 20).
+pokemon(charizard, speed, 10).
+pokemon(charizard, moves, [fire_spin, wing_attack, flamethrower, fire_blast]).
+
+pokemon(torterra, type, ground).
+pokemon(torterra, hp, 190).
+pokemon(torterra, attack, 9).
+pokemon(torterra, defense, 15).
+pokemon(torterra, speed, 10).
+pokemon(torterra, move, [earthquake, blazor_leaf, quick_attack, rock_smash]).
 
 % to be refactored
 % determine which pokemon moves first
