@@ -3,42 +3,42 @@
 % Create a loop of battle
 battle(Player, PlayerHP, Computer, ComputerHP) :-
     PlayerHP>0, ComputerHP>0,
-    promptMessages(Player, PlayerHP, Computer, ComputerHP),
+    prompt_messages(Player, PlayerHP, Computer, ComputerHP),
     pokemon(Player, speed, PlayerSpeed),
     pokemon(Computer, speed, ComputerSpeed),
-    fasterGoFirst(Player, PlayerSpeed, PlayerHP, NewPlayerHP, Computer, ComputerSpeed, ComputerHP, NewComputerHP),
-    checkIfContinue(Player, PlayerSpeed, NewPlayerHP, Computer, ComputerSpeed, NewComputerHP).
+    faster_go_first(Player, PlayerSpeed, PlayerHP, NewPlayerHP, Computer, ComputerSpeed, ComputerHP, NewComputerHP),
+    check_if_continue(Player, PlayerSpeed, NewPlayerHP, Computer, ComputerSpeed, NewComputerHP).
 
-fasterGoFirst(Player, PlayerSpeed, PlayerHP, NewPlayerHP, Computer, ComputerSpeed, ComputerHP, NewComputerHP) :-
+faster_go_first(Player, PlayerSpeed, PlayerHP, NewPlayerHP, Computer, ComputerSpeed, ComputerHP, NewComputerHP) :-
     (PlayerSpeed >= ComputerSpeed -> 
-        playerGoFirst(Player, PlayerHP, NewPlayerHP, Computer, ComputerHP, NewComputerHP); 
-        computerGoFirst(Player, PlayerHP, NewPlayerHP, Computer, ComputerHP, NewComputerHP)).
+        player_go_first(Player, PlayerHP, NewPlayerHP, Computer, ComputerHP, NewComputerHP); 
+        computer_go_first(Player, PlayerHP, NewPlayerHP, Computer, ComputerHP, NewComputerHP)).
 
-playerGoFirst(Player, PlayerHP, NewPlayerHP, Computer, ComputerHP, NewComputerHP) :-
-    playersTurn(Player, Computer, ComputerHP, NewComputerHP),
-    computersTurn(Computer, Player, PlayerHP, NewPlayerHP).
+player_go_first(Player, PlayerHP, NewPlayerHP, Computer, ComputerHP, NewComputerHP) :-
+    players_turn(Player, Computer, ComputerHP, NewComputerHP),
+    computers_turn(Computer, Player, PlayerHP, NewPlayerHP).
 
-computerGoFirst(Player, PlayerHP, NewPlayerHP, Computer, ComputerHP, NewComputerHP) :-
-    computersTurn(Computer, Player, PlayerHP, NewPlayerHP),
-    playersTurn(Player, Computer, ComputerHP, NewComputerHP).
+computer_go_first(Player, PlayerHP, NewPlayerHP, Computer, ComputerHP, NewComputerHP) :-
+    computers_turn(Computer, Player, PlayerHP, NewPlayerHP),
+    players_turn(Player, Computer, ComputerHP, NewComputerHP).
 
-checkIfContinue(Player, PlayerSpeed, NewPlayerHP, Computer, ComputerSpeed, NewComputerHP) :-
+check_if_continue(Player, PlayerSpeed, NewPlayerHP, Computer, ComputerSpeed, NewComputerHP) :-
     (NewPlayerHP > 0, NewComputerHP > 0 ->
         battle(Player, NewPlayerHP, Computer, NewComputerHP)
     ; NewPlayerHP =< 0, NewComputerHP =< 0 ->
-        fasterToWin(PlayerSpeed, ComputerSpeed)
-    ; getResult(NewPlayerHP, NewComputerHP)
+        faster_to_win(PlayerSpeed, ComputerSpeed)
+    ; get_result(NewPlayerHP, NewComputerHP)
     ).
 
-getResult(PlayerHP, ComputerHP) :-
+get_result(PlayerHP, ComputerHP) :-
     (PlayerHP > ComputerHP -> writeln('\nVictory!\n'); writeln('\nDefeat!\n')),
     !.
 
-fasterToWin(PlayerSpeed, ComputerSpeed) :-
+faster_to_win(PlayerSpeed, ComputerSpeed) :-
     (PlayerSpeed >= ComputerSpeed -> writeln('\nYou were faster! Victory!\n'); writeln('\nComputer was faster! Defeat!\n')),
     !.
 
-promptMessages(Player, PlayerHP, Computer, ComputerHP) :-
+prompt_messages(Player, PlayerHP, Computer, ComputerHP) :-
     write('\nPlayer: '), write(Player), write(' | Computer: '), write(Computer),
     format('\nPlayer HP: ~1f | Computer HP: ~1f~n', [PlayerHP, ComputerHP]).
 
@@ -51,14 +51,14 @@ attack(Attacker, Defender, AttackerMove, DefenderOriginalHP, DefenderRemainingHP
     format('~w (enemy) used ~w! ~w (ally) lost ~1f health.~n', [Attacker, AttackerMove, Defender, AttackerDamage]),
     format('~w (ally) has ~1f health left.~n', [Defender, DefenderRemainingHP])).
 
-playersTurn(Player, Computer, ComputerHP, NewComputerHP) :-
+players_turn(Player, Computer, ComputerHP, NewComputerHP) :-
     pokemon(Player, moves, PlayerMoves),
     write('\nChoose your move:'),
     writeln(PlayerMoves), read(PlayerMove),
     writeln("\nPlayer's turn:"),
     attack(Player, Computer, PlayerMove, ComputerHP, NewComputerHP, 1).
 
-computersTurn(Computer, Player, PlayerHP, NewPlayerHP) :-
+computers_turn(Computer, Player, PlayerHP, NewPlayerHP) :-
     pokemon(Computer, moves, ComputerMoves),
     random_member(ComputerChosenMove, ComputerMoves),
     writeln("\nComputer's turn:"),
