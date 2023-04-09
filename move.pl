@@ -1,4 +1,6 @@
 % move(move name, type, damage)
+
+% normal
 move(quick_attack, normal, 20).
 move(scratch, normal, 30).
 move(tackle, normal, 30).
