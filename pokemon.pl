@@ -1,10 +1,10 @@
 % pokemon(name, type, HP, attack, defense, speed, list of moves)
-pokemon(charmander, fire, 150, 14, 10, 20, [scratch, flamethrower, swords_dance]).
-pokemon(squirtle, water, 180, 8, 18, 15, [tackle, water_gun, iron_defense]).
-pokemon(bulbasaur, grass, 210, 6, 20, 10, [tackle, vine_whip, synthesis]).
-pokemon(pikachu, electric, 180, 10, 15, 30, [quick_attack, spark, electro_ball, thunderbolt]).
-pokemon(charizard, flying, 170, 15, 20, 10, [fire_spin, wing_attack, flamethrower, fire_blast]).
-pokemon(torterra, ground, 190, 9, 15, 10, [earthquake, blazor_leaf, absorb, rock_smash]).
+%pokemon(charmander, fire, 150, 14, 10, 20, [scratch, flamethrower, swords_dance]).
+%pokemon(squirtle, water, 180, 8, 18, 15, [tackle, water_gun, iron_defense]).
+%pokemon(bulbasaur, grass, 210, 6, 20, 10, [tackle, vine_whip, synthesis]).
+%pokemon(pikachu, electric, 180, 10, 15, 30, [quick_attack, spark, electro_ball, thunderbolt]).
+%pokemon(charizard, flying, 170, 15, 20, 10, [fire_spin, wing_attack, flamethrower, fire_blast]).
+%pokemon(torterra, ground, 190, 9, 15, 10, [earthquake, blazor_leaf, absorb, rock_smash]).
 
 pokemon(charmander, type, fire).
 pokemon(charmander, hp, 150).
@@ -107,45 +107,45 @@ move(absorb, normal, -1).
 move(rock_smash, ground, 40).
 
 % 
-apply_status(Pokemon, Move, NewPokemon) :-
-    pokemon(Pokemon, Type, HP, CAttack, Defense, Speed, Moves),
-    move(Move,_,-1),
-    NewAttack is (1+2/3)*CAttack,
-    NewPokemon = pokemon(Pokemon, Type, HP, NewAttack, Defense, Speed, Moves).
+%apply_status(Pokemon, Move, NewPokemon) :-
+%    pokemon(Pokemon, Type, HP, CAttack, Defense, Speed, Moves),
+%    move(Move,_,-1),
+%    NewAttack is (1+2/3)*CAttack,
+%    NewPokemon = pokemon(Pokemon, Type, HP, NewAttack, Defense, Speed, Moves).
 
-apply_status(Pokemon, Move, NewPokemon) :-
-    pokemon(Pokemon, Type, HP, Attack, CDefense, Speed, Moves),
-    move(Move,_,-2),
-    NewDefense is (1+2/3)*CDefense,
-    NewPokemon = pokemon(Pokemon, Type, HP, Attack, NewDefense, Speed, Moves).
+%apply_status(Pokemon, Move, NewPokemon) :-
+%    pokemon(Pokemon, Type, HP, Attack, CDefense, Speed, Moves),
+%    move(Move,_,-2),
+%    NewDefense is (1+2/3)*CDefense,
+%    NewPokemon = pokemon(Pokemon, Type, HP, Attack, NewDefense, Speed, Moves).
 
-apply_status(Pokemon, Move, NewPokemon) :-
-    pokemon(Pokemon, Type, CurrentHP, Attack, Defense, Speed, Moves),
-    move(Move,_,-3),
-    (CurrentHP >= 210/2 -> NewHP is 210; NewHP is CurrentHP + 210/2),
-    NewPokemon = pokemon(Pokemon, Type, NewHP, Attack, Defense, Speed, Moves).
+%apply_status(Pokemon, Move, NewPokemon) :-
+%    pokemon(Pokemon, Type, CurrentHP, Attack, Defense, Speed, Moves),
+%    move(Move,_,-3),
+%    (CurrentHP >= 210/2 -> NewHP is 210; NewHP is CurrentHP + 210/2),
+%    NewPokemon = pokemon(Pokemon, Type, NewHP, Attack, Defense, Speed, Moves).
 
-apply_status(Pokemon, _, Pokemon).
-
-
+%apply_status(Pokemon, _, Pokemon).
 
 
-damage(Attacker, Defender, Move, Damage) :-
-    pokemon(Attacker, Type_1, HP_1, Attack_1, Defense_1, Speed_1, Moves_1),
-    member(Move, Moves_1),
-    move(_,_,BaseDamage),
-    BaseDamage > 0,
-    pokemon(Defender, Type_2, HP_2, Attack_2, Defense_2, Speed_2, Moves_2),
-    (Attacker=Defender;dif(Attacker,Defender)),
-    (Type_1=Type_2;dif(Type_1,Type_2)),
-    (HP_1=HP_2;dif(HP_1,HP_2)),
-    (Attack_1=Attack_2;dif(Attack_1,Attack_2)),
-    (Defense_1=Defense_2;dif(Defense_1,Defense_2)),
-    (Speed_1=Speed_2;dif(Speed_1,Speed_2)),
-    (Moves_1=Moves_2;dif(Moves_1,Moves_2)),
-    move(Move, MoveType, BaseDamage),
-    effectFactor(MoveType,Type_2, Multiplier),
-    Damage is round((BaseDamage*Attack_1)*Multiplier/Defense_2).
+
+
+%damage(Attacker, Defender, Move, Damage) :-
+%    pokemon(Attacker, Type_1, HP_1, Attack_1, Defense_1, Speed_1, Moves_1),
+%    member(Move, Moves_1),
+%    move(_,_,BaseDamage),
+%    BaseDamage > 0,
+%    pokemon(Defender, Type_2, HP_2, Attack_2, Defense_2, Speed_2, Moves_2),
+%    (Attacker=Defender;dif(Attacker,Defender)),
+%    (Type_1=Type_2;dif(Type_1,Type_2)),
+%    (HP_1=HP_2;dif(HP_1,HP_2)),
+%    (Attack_1=Attack_2;dif(Attack_1,Attack_2)),
+%    (Defense_1=Defense_2;dif(Defense_1,Defense_2)),
+%    (Speed_1=Speed_2;dif(Speed_1,Speed_2)),
+%    (Moves_1=Moves_2;dif(Moves_1,Moves_2)),
+%    move(Move, MoveType, BaseDamage),
+%    effectFactor(MoveType,Type_2, Multiplier),
+%    Damage is round((BaseDamage*Attack_1)*Multiplier/Defense_2).
 
 
 start :-
@@ -219,18 +219,36 @@ move_order(Pokemon_1, Move_1, Pokemon_2, Move_2, Pokemon_2, Move_2, Pokemon_1, M
 
 % drafting check win condition 
 % win(turns)
-win(0).
-win(Turns):-
-    Remaining is Turns - 1,
-    win(Remaining).
+%win(0).
+%win(Turns):-
+%    Remaining is Turns - 1,
+%    win(Remaining).
 
 % select three pokemons
-select_pokemon(1, charmander).
-select_pokemon(2, squirtle).
-select_pokemon(3, bulbasaur).
-select_pokemon(4, pikachu).
-select_pokemon(5, charizard).
-select_pokemon(6, torterra).
+pokemon_index(1, charmander).
+pokemon_index(2, squirtle).
+pokemon_index(3, bulbasaur).
+pokemon_index(4, pikachu).
+pokemon_index(5, charizard).
+pokemon_index(6, torterra).
+
+
+% the list of pokemon selected by players
+pokemon_selected(Pokemon, List, NewList) :-
+    append(List, [Pokemon], NewList).
+
+
+% select_pokemon
+select_pokemon(3,[]).
+select_pokemon(Num_Pokemon_Selected, [Pokemon|Result]) :-
+    write('Choose your pokemon'),
+    writeln([charmander, squirtle, bulbasaur, pikachu, charizard, torterra]),
+    read(Selection),
+    pokemon_index(Selection,Pokemon),
+    Updated_Num is Num_Pokemon_Selected + 1,
+    select_pokemon(Updated_Num, Result).
+
+
 
 % select move; the move array can be in length 3 or 4
 select_move(1,[A | _], A).
@@ -259,4 +277,4 @@ computer_move(Pokemon, Move) :-
 %    computer_move(Computer, Move2)
 %    move_order(Player, Move1, Computer, Move2, First_Mover, M1, Second_Mover, M2),
 %    damage(First_Mover, Second_Mover, M1, Damage1),
-%    damage(Second_Mover, First_Mover, M2, Damage2).
+%    damage(Second_Mover, First_Mover, M2, Damage2)..
