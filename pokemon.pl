@@ -145,32 +145,8 @@ damage(Attacker, Defender, Move, Damage) :-
     (Moves_1=Moves_2;dif(Moves_1,Moves_2)),
     move(Move, MoveType, BaseDamage),
     effectFactor(MoveType,Type_2, Multiplier),
-    Damage is (BaseDamage*Attack_1)*Multiplier/Defense_2.
+    Damage is round((BaseDamage*Attack_1)*Multiplier/Defense_2).
 
-
-% redesigned damage function
-damage(Attacker, Defender, Move, Damage) :-
-    pokemon(Attacker, attack, A),
-    pokemon(Attacker, move, M),
-    member(Move, M),
-    move(Move, MoveType, BaseDamage),
-    BaseDamage > 0,
-    pokemon(Defender, defense, D),
-    pokemon(Defender, type, T),
-    effectFactor(MoveType, T, Multiplier),
-    Damage is ((BaseDamage * A) * Multiplier)/D.
-
-% determine which pokemon moves first
-% move_order(pokemon_1, pokemon_2, first_mover, second_mover).
-move_order(Pokemon_1, Pokemon_2, Pokemon_1, Pokemon_2) :-
-    pokemon(Pokemon_1, speed, S1),
-    pokemon(Pokemon_2, speed, S2),
-    S2 < S1.
-
-move_order(Pokemon_1, Pokemon_2, Pokemon_2, Pokemon_1) :-
-    pokemon(Pokemon_1, speed, S1),
-    pokemon(Pokemon_2, speed, S2),
-    S1 < S2.
 
 start :-
     write('Choose your first pokemon to fight: [charmander,squirtle,bulbasaur, pikachu, charizard, torterra]:'),
@@ -203,11 +179,42 @@ battle(Player,PHP,Computer,CHP) :-
     (NewPHP =< 0 -> writeln('You lose!'), !;
     battle(Player,NewPHP,Computer,NewCHP))).
 
+
 % turn of computer, randomly choose the move
 c_turn_randomly_choose_move(Computer,Player,Damage) :-
     pokemon(Computer,_,_,_,_,_,Moves),
     random_member(Move,Moves),
     damage(Computer,Player,Move,Damage).
+
+
+% redesigned damage function
+damage(Attacker, Defender, Move, Damage) :-
+    pokemon(Attacker, attack, A),
+    pokemon(Attacker, move, M),
+    member(Move, M),
+    move(Move, MoveType, BaseDamage),
+    BaseDamage > 0,
+    pokemon(Defender, defense, D),
+    pokemon(Defender, type, T),
+    effectFactor(MoveType, T, Multiplier),
+    Damage is ((BaseDamage * A) * Multiplier)/D.
+
+% determine which pokemon moves first
+% move_order(pokemon_1, pokemon_2, first_mover, second_mover).
+move_order(Pokemon_1, Move_1, Pokemon_2, Move_2, Pokemon_1, Move_1, Pokemon_2, Move_2) :-
+    pokemon(Pokemon_1, speed, S1),
+    pokemon(Pokemon_2, speed, S2),
+    S2 < S1.
+
+move_order(Pokemon_1, Move_1, Pokemon_2, Move_2, Pokemon_1, Move_1, Pokemon_2, Move_2) :-
+    pokemon(Pokemon_1, speed, S1),
+    pokemon(Pokemon_2, speed, S2),
+    S2 =:= S1.
+
+move_order(Pokemon_1, Move_1, Pokemon_2, Move_2, Pokemon_2, Move_2, Pokemon_1, Move_1) :-
+    pokemon(Pokemon_1, speed, S1),
+    pokemon(Pokemon_2, speed, S2),
+    S1 < S2.
 
 
 % drafting check win condition 
@@ -217,5 +224,39 @@ win(Turns):-
     Remaining is Turns - 1,
     win(Remaining).
 
+% select three pokemons
+select_pokemon(1, charmander).
+select_pokemon(2, squirtle).
+select_pokemon(3, bulbasaur).
+select_pokemon(4, pikachu).
+select_pokemon(5, charizard).
+select_pokemon(6, torterra).
+
+% select move; the move array can be in length 3 or 4
+select_move(1,[A | _], A).
+select_move(2,[_, B |_], B).
+select_move(3,[_, _, C |_], C).
+select_move(4,[_, _, _, D], D).
 
 
+choose_move(Pokemon, Move) :-
+    write('Choose your move (type in 1, 2 and so on):'),
+    pokemon(Pokemon, move, Moves),
+    writeln(Moves),
+    read(Selection),
+    select_move(Selection,Moves,Move).
+
+% computer to choose its move
+computer_move(Pokemon, Move) :-
+    pokemon(Pokemon, move, Moves),
+    random_member(Move,Moves).
+
+
+% need to consider the move
+% need to consider whose HP gets deducted
+%battle(Player,PHP,Computer,CHP) :-
+%    choose_move(Player, Move1),
+%    computer_move(Computer, Move2)
+%    move_order(Player, Move1, Computer, Move2, First_Mover, M1, Second_Mover, M2),
+%    damage(First_Mover, Second_Mover, M1, Damage1),
+%    damage(Second_Mover, First_Mover, M2, Damage2).
