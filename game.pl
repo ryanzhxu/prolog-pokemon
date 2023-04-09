@@ -3,17 +3,15 @@
 start :-
     prompt_for_pokemon(Player),
     ((member(Player, [charmander, squirtle, bulbasaur, pikachu, charizard, torterra])) -> 
-        pokemon(Player, hp, PHP),
-        computer_choose_pokemon_randomly(Computer),
-        pokemon(Computer, hp, CHP),
+        get_player_and_computer(Player, PHP, Computer, CHP),
         battle(Player, PHP, Computer, CHP)
     ; writeln('\nNot a valid selection. Please try again.'), start).
-
-% computer randomly choose a pokemon
-computer_choose_pokemon_randomly(Pokemon) :-
-    findall(P, pokemon(P, _, _), Pokemons),
-    random_member(Pokemon, Pokemons).
 
 prompt_for_pokemon(Player) :-
     write('Choose your first pokemon to fight: [charmander, squirtle, bulbasaur, pikachu, charizard, torterra]: '),
     read(Player).
+
+get_player_and_computer(Player, PlayerHP, Computer, ComputerHP) :-
+    pokemon(Player, hp, PlayerHP),
+    random_member(Computer, [charmander, squirtle, bulbasaur, pikachu, charizard, torterra]),
+    pokemon(Computer, hp, ComputerHP).
