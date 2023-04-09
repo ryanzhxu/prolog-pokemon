@@ -1,57 +1,23 @@
 %weakness(Type1, Type2).    
 weakness(fire, grass).
-weakness(fire, ice).
-weakness(fire, bug).
-weakness(fire, steel).
+
 weakness(water, fire).
 weakness(water, ground).
-weakness(water, rock).
+
 weakness(grass, water).
 weakness(grass, ground).
-weakness(grass, rock).
 weakness(grass, flying).
+
 weakness(electric, water).
 weakness(electric, flying).
-weakness(electric, steel).
-weakness(ice, grass).
-weakness(ice, ground).
-weakness(ice, flying).
-weakness(ice, dragon).
-weakness(fighting, normal).
-weakness(fighting, ice).
-weakness(fighting, rock).
-weakness(fighting, dark).
-weakness(poison, grass).
-weakness(poison, fairy).
+
 weakness(ground, fire).
 weakness(ground, electric).
-weakness(ground, poison).
-weakness(ground, rock).
-weakness(ground, steel).
+
 weakness(flying, grass).
-weakness(flying, fighting).
-weakness(flying, bug).
-weakness(psychic, fighting).
-weakness(psychic, poison).
-weakness(bug, grass).
-weakness(bug, psychic).
-weakness(bug, dark).
-weakness(rock, fire).
-weakness(rock, ice).
-weakness(rock, flying).
-weakness(rock, bug).
-weakness(steel, ice).
-weakness(steel, rock).
-weakness(steel, fairy).
-weakness(ghost, psychic).
-weakness(ghost, ghost).
-weakness(fairy, fighting).
-weakness(fairy, dragon).
-weakness(fairy, dark).
 
 %resistance(Type1, Type2).
 resistance(fire, fire).
 resistance(fire, water).
-resistance(fire, rock).
-resistance(fire, dragon).
+
 resistance(water, water).
