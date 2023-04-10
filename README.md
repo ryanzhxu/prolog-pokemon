@@ -1,8 +1,8 @@
-# prolog-pokemon
+# Pokémon
 
 ### What is the problem?
 
-We'd like to build a PvP Pokemon game where 2 players take turn to go against each other by using their favourite Pokemon.
+We'd like to build a BO5 Player vs Computer Pokémon game where each takes turn to cast a move and go against each other using their selected Pokémons.
 
   - There will be a number of Pokemons for selection.
   - Each Pokemon has
