@@ -27,11 +27,3 @@ advance_index(Wins, New_Wins, Index, New_Index) :-
     (New_Wins > Wins -> 
         New_Index is Index;
         New_Index is Index + 1).
-
-% advance_index(0, 0, _, _).
-% advance_index(1, 0, P_Index, C_Index) :- 
-%     Updated_Index is P_Index + 1,
-%     advance_index(0, 0, Updated_Index, C_Index).
-% advance_index(0, 1, P_Index, C_Index) :- 
-%     Updated_Index is C_Index + 1,
-%     advance_index(0, 0, P_Index, Updated_Index).
