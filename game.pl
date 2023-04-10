@@ -53,16 +53,14 @@ track_game_process(Player_Pokemons, Computer_Pokemons, P_Index, C_Index, P_Wins,
     battle(Player, PHP, Computer, CHP, P_Win, C_Win),
     Updated_P_Wins is P_Wins + P_Win,
     Updated_C_Wins is C_Wins + C_Win,
-    advance_index(P_Win, C_Win, P_Index, C_Index),
+    advance_index(P_Wins, Updated_P_Wins, P_Index, Updated_P_Index),
+    advance_index(C_Wins, Updated_C_Wins, C_Index, Updated_C_Index),
     format("Player's score: ~d\nComputer's score: ~d ~n", [Updated_P_Wins, Updated_C_Wins]),
     print_status_message(Updated_P_Wins, Updated_C_Wins),
     track_game_process(Player_Pokemons, Computer_Pokemons, Updated_P_Index, Updated_C_Index, Updated_P_Wins, Updated_C_Wins).
 
-check_winning_status(P_Wins, C_Wins, Status) :-
-    (P_Wins =:= 3; C_Wins =:= 3; P_Wins+C_Wins =:= 5) -> Status = 1; Status = 0.
-
 print_status_message(P_Wins, C_Wins) :-
     (P_Wins =:= 2, C_Wins =:= 2) -> format("~nSudden Death!~n");
     (P_Wins =:= 2; C_Wins =:= 2) -> format("~nFinal Round!~n");
-    (P_Wins+C_Wins =:= 5; P_Wins == 3; C_Wins == 3) -> (P_Wins == 3 -> format("~nYou win!~n"); format("~nYou lost!~n"));
+    (P_Wins+C_Wins =:= 5; P_Wins == 3; C_Wins == 3) -> (P_Wins == 3 -> format("~nYou win!~n~n"); format("~nYou lost!~n~n"));
     get_sum_plus_one(P_Wins, C_Wins, Round), format("~nRound ~d!~n", Round).
