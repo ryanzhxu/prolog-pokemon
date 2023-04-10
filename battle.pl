@@ -1,11 +1,11 @@
 :- [pokemon, damage, helpers].
 
 % Create a loop of battle
-battle(Player, PlayerHP, Computer, ComputerHP) :-
+battle(Player, PlayerHP, Computer, ComputerHP, P_Win, C_Win) :-
     PlayerHP>0, ComputerHP>0,
     prompt_messages(Player, PlayerHP, Computer, ComputerHP),
     faster_go_first(Player, PlayerHP, NewPlayerHP, Computer, ComputerHP, NewComputerHP),
-    check_if_continue(Player, NewPlayerHP, Computer, NewComputerHP).
+    check_if_continue(Player, NewPlayerHP, Computer, NewComputerHP, P_Win, C_Win).
 
 faster_go_first(Player, PlayerHP, NewPlayerHP, Computer, ComputerHP, NewComputerHP) :-
     pokemon(Player, speed, PlayerSpeed),
@@ -22,22 +22,24 @@ computer_go_first(Player, PlayerHP, NewPlayerHP, Computer, ComputerHP, NewComput
     computers_turn(Computer, Player, PlayerHP, NewPlayerHP),
     players_turn(Player, Computer, ComputerHP, NewComputerHP).
 
-check_if_continue(Player, NewPlayerHP, Computer, NewComputerHP) :-
+check_if_continue(Player, NewPlayerHP, Computer, NewComputerHP, P_Win, C_Win) :-
     (NewPlayerHP > 0, NewComputerHP > 0 ->
-        battle(Player, NewPlayerHP, Computer, NewComputerHP)
+        battle(Player, NewPlayerHP, Computer, NewComputerHP, P_Win, C_Win)
     ; NewPlayerHP =< 0, NewComputerHP =< 0 ->
-        faster_to_win(Player, Computer)
-    ; get_result(NewPlayerHP, NewComputerHP)
+        faster_to_win(Player, Computer, P_Win, C_Win)
+    ; get_result(NewPlayerHP, NewComputerHP, P_Win, C_Win)
     ).
 
-get_result(PlayerHP, ComputerHP) :-
-    (PlayerHP > ComputerHP -> writeln('\nVictory!\n'); writeln('\nDefeat!\n')),
+get_result(PlayerHP, ComputerHP, P_Win, C_Win) :-
+    (PlayerHP > ComputerHP -> writeln('\nVictory!\n'), P_Win = 1, C_Win =0
+    ; writeln('\nDefeat!\n'), P_Win = 0, C_Win =1),
     !.
 
-faster_to_win(Player, Computer) :-
+faster_to_win(Player, Computer, P_Win, C_Win) :-
     pokemon(Player, speed, PlayerSpeed),
     pokemon(Computer, speed, ComputerSpeed),
-    (PlayerSpeed >= ComputerSpeed -> writeln('\nYou were faster! Victory!\n'); writeln('\nComputer was faster! Defeat!\n')),
+    (PlayerSpeed >= ComputerSpeed -> writeln('\nYou were faster! Victory!\n'), P_Win = 1, C_Win =0
+    ; writeln('\nComputer was faster! Defeat!\n'), P_Win = 0, C_Win =1),
     !.
 
 prompt_messages(Player, PlayerHP, Computer, ComputerHP) :-
@@ -58,7 +60,7 @@ players_turn(Player, Computer, ComputerHP, NewComputerHP) :-
     write('\nChoose your move:\n\n'),
     print_list_with_index(PlayerMoves, 1),
     read(Selection),
-    ((select_move(Selection, PlayerMoves, PlayerMove)) ->
+    ((select_item(Selection, PlayerMoves, PlayerMove)) ->
     writeln("\nPlayer's turn:"),
     attack(Player, Computer, PlayerMove, ComputerHP, NewComputerHP, 1)
     ; writeln('\nNot a valid selection. Please try again.'), players_turn(Player, Computer, ComputerHP, NewComputerHP)).

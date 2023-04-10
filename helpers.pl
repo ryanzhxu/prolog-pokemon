@@ -9,3 +9,20 @@ print_list_with_index([H|T], I, IsMove) :-
         format('    ~w. ~w~n', [I, H])),
     NextIndex is I + 1,
     print_list_with_index(T, NextIndex, IsMove). 
+
+
+% index for selecting moves or pokemons
+% the list can be in length 3 or 4
+select_item(1,[A | _], A).
+select_item(2,[_, B |_], B).
+select_item(3,[_, _, C |_], C).
+select_item(4,[_, _, _, D], D).
+
+
+advance_index(0, 0, _, _).
+advance_index(1, 0, P_Index, C_Index) :- 
+    Updated_Index is P_Index + 1,
+    advance_index(0, 0, Updated_Index, C_Index).
+advance_index(0, 1, P_Index, C_Index) :- 
+    Updated_Index is C_Index + 1,
+    advance_index(0, 0, P_Index, Updated_Index).
