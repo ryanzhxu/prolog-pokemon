@@ -41,7 +41,6 @@ pokemon(torterra, defense, 15).
 pokemon(torterra, speed, 10).
 pokemon(torterra, move, [earthquake, blazor_leaf, quick_attack, rock_smash]).
 
-
 % index for selecting pokemons
 pokemon_index(1, charmander).
 pokemon_index(2, squirtle).
@@ -49,7 +48,6 @@ pokemon_index(3, bulbasaur).
 pokemon_index(4, pikachu).
 pokemon_index(5, charizard).
 pokemon_index(6, torterra).
-
 
 % select three pokemons
 select_pokemon(3,[]).
@@ -67,6 +65,10 @@ select_move(1,[A | _], A).
 select_move(2,[_, B |_], B).
 select_move(3,[_, _, C |_], C).
 select_move(4,[_, _, _, D], D).
+
+get_all_pokemons(Pokemons) :-
+    findall(Name, pokemon(Name, _, _), Names),
+    sort(Names, Pokemons).
     
 :- assertz(file_search_path(library,pce('prolog/lib'))).
 :- assertz(file_search_path(pce,swi(xpce))).

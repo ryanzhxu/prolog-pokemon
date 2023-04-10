@@ -1,18 +1,26 @@
-:- [pokemon, battle].
+:- [pokemon, battle, helpers].
+
+go :-
+    writeln('\nWelcome to Pokémon Game!\n'),
+    start.
 
 start :-
-    prompt_for_pokemon(Selection),
+    get_all_pokemons(Pokemons),
+    player_selects_pokemon(Selection, Pokemons),
+    computer_selects_pokemon(Computer, Pokemons),
     ((pokemon_index(Selection, Player)) -> 
-        pokemon(Player, hp, PHP),
-        computer_choose_pokemon_randomly(Computer),
-        pokemon(Computer, hp, CHP),
+        get_selected_pokemons_and_hps(Player, PHP, Computer, CHP),
         battle(Player, PHP, Computer, CHP)
     ; writeln('\nNot a valid selection. Please try again.'), start).
 
-% computer randomly choose a pokemon
-computer_choose_pokemon_randomly(Pokemon) :-
-    random_member(Pokemon, [charmander, squirtle, bulbasaur, pikachu, charizard, torterra]).
-
-prompt_for_pokemon(Player) :-
-    write('Choose your first pokemon to fight: [charmander, squirtle, bulbasaur, pikachu, charizard, torterra]: '),
+player_selects_pokemon(Selection, Pokemons) :-
+    write('Please choose your pokemon to fight:\n\n'),
+    print_list_with_index(Pokemons, 0),
     read(Selection).
+
+computer_selects_pokemon(Computer, Pokemons) :-
+    random_member(Computer, Pokemons).
+
+get_selected_pokemons_and_hps(Player, PlayerHP, Computer, ComputerHP) :-
+    pokemon(Player, hp, PlayerHP),
+    pokemon(Computer, hp, ComputerHP).

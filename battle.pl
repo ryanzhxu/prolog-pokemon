@@ -1,4 +1,4 @@
-:- [pokemon, damage].
+:- [pokemon, damage, helpers].
 
 % Create a loop of battle
 battle(Player, PlayerHP, Computer, ComputerHP) :-
@@ -55,8 +55,8 @@ attack(Attacker, Defender, AttackerMove, DefenderOriginalHP, DefenderRemainingHP
 
 players_turn(Player, Computer, ComputerHP, NewComputerHP) :-
     pokemon(Player, moves, PlayerMoves),
-    write('\nChoose your move:'),
-    writeln(PlayerMoves), 
+    write('\nChoose your move:\n\n'),
+    print_list_with_index(PlayerMoves, 1),
     read(Selection),
     select_move(Selection, PlayerMoves, PlayerMove),
     writeln("\nPlayer's turn:"),
@@ -66,5 +66,4 @@ computers_turn(Computer, Player, PlayerHP, NewPlayerHP) :-
     pokemon(Computer, moves, ComputerMoves),
     random_member(ComputerChosenMove, ComputerMoves),
     writeln("\nComputer's turn:"),
-    attack(Computer, Player, ComputerChosenMove, PlayerHP, NewPlayerHP, 0).
-    
+    attack(Computer, Player, ComputerChosenMove, PlayerHP, NewPlayerHP, 0).   
