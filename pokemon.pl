@@ -71,49 +71,68 @@ get_all_pokemons(Pokemons) :-
     sort(Names, Pokemons).
     
 :- assertz(file_search_path(library,pce('prolog/lib'))).
+:- assertz(file_search_path(pce,'C:/Program Files/swipl/xpce/')). 
 :- assertz(file_search_path(pce,swi(xpce))).
 :- use_module(library(pce)).
+:- use_module(library(pce_style_item)).
+:- use_module(library(pce_util)).
+
+:- multifile user:file_search_path/2.
+:- dynamic   user:file_search_path/2.
+user:file_search_path(images, '.').
 
 % Predicate to create the main window and its components
 gui :-
     new(Window, dialog('Pokémon Information')),
-    send(Window, append, button('Charmander', message(@prolog, show_pokemon_info, 'Charmander'))),
-    send(Window, append, button('Squirtle', message(@prolog, show_pokemon_info, 'Squirtle'))),
-    send(Window, append, button('Bulbasaur', message(@prolog, show_pokemon_info, 'Bulbasaur'))),
-    send(Window, append, button('Pikachu', message(@prolog, show_pokemon_info, 'Pikachu'))),
-    send(Window, append, button('Charizard', message(@prolog, show_pokemon_info, 'Charizard'))),
-    send(Window, append, button('Torterra', message(@prolog, show_pokemon_info, 'Torterra'))),
 
+    % Use absolute_file_name/2 to get the absolute path of the image
+    absolute_file_name(images('pokemon.gif'), ImagePath),
+
+    % Load the image and create a bitmap object
+    %new(Image, image(ImagePath)),
+    %new(Image, image('c:/users/feng/desktop/prolog-pokemon-main/pokemon.gif')).
+    %new(Picture, bitmap(Image)),
+    % Append the bitmap object to the main window
+    %send(Window, append, Picture),
+
+    send(Window, append, button('Charmander', message(@prolog, pokemon_information, 'Charmander'))),
+    send(Window, append, button('Squirtle', message(@prolog, pokemon_information, 'Squirtle'))),
+    send(Window, append, button('Bulbasaur', message(@prolog, pokemon_information, 'Bulbasaur'))),
+    send(Window, append, button('Pikachu', message(@prolog, pokemon_information, 'Pikachu'))),
+    send(Window, append, button('Charizard', message(@prolog, pokemon_information, 'Charizard'))),
+    send(Window, append, button('Torterra', message(@prolog, pokemon_information, 'Torterra'))),
+    
     send(Window, append, button('Close', message(Window, destroy))),
-
     send(Window, open),
-    event_loop.
+    event_loop(Window).
 
-% Predicate to display the Pokémon information
-show_pokemon_info(PokemonName) :-
-    pokemon_atom_to_lower(PokemonName, LowerPokemonName),
+    
+% display the Pokémon information
+pokemon_information(PokemonName) :-
+    pokemon_to_lower(PokemonName, LowerPokemonName),
     pokemon(LowerPokemonName, type, Type),
     pokemon(LowerPokemonName, hp, HP),
     pokemon(LowerPokemonName, attack, Attack),
     pokemon(LowerPokemonName, defense, Defense),
     pokemon(LowerPokemonName, speed, Speed),
     pokemon(LowerPokemonName, moves, Moves),
-    format_pokemon_info(PokemonName, Type, HP, Attack, Defense, Speed, Moves, Info),
+    format_info(PokemonName, Type, HP, Attack, Defense, Speed, Moves, Info),
     new(InfoDialog, dialog(PokemonName)),
     send(InfoDialog, append, new(T, text(Info))),
     send(InfoDialog, append, button('Close', message(InfoDialog, destroy))),
     send(InfoDialog, open).
 
-
-% Convert the Pokémon name to a lowercase atom
-pokemon_atom_to_lower(PokemonName, LowerPokemonName) :-
+pokemon_to_lower(PokemonName, LowerPokemonName) :-
     downcase_atom(PokemonName, LowerPokemonName).
 
-% Format the Pokémon information as a string
-format_pokemon_info(PokemonName, Type, HP, Attack, Defense, Speed, Moves, Info) :-
+format_info(PokemonName, Type, HP, Attack, Defense, Speed, Moves, Info) :-
     format(string(Info), "Name: ~w\nType: ~w\nHP: ~d\nAttack: ~d\nDefense: ~d\nSpeed: ~d\nMoves: ~w", [PokemonName, Type, HP, Attack, Defense, Speed, Moves]).
 
-event_loop :-
+
+event_loop(Window) :-
     repeat,
-    pce_dispatch,
-    fail.
+    (   object(Window)
+    ->  pce_dispatch,
+        fail
+    ;!
+    ).
