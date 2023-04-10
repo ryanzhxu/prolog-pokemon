@@ -69,7 +69,6 @@ user:file_search_path(images, '.').
 % Predicate to create the main window and its components
 gui :-
     new(Window, dialog('Pokémon Information')),
-
     send(Window, append, button('Charmander', message(@prolog, pokemon_information, 'Charmander'))),
     send(Window, append, button('Squirtle', message(@prolog, pokemon_information, 'Squirtle'))),
     send(Window, append, button('Bulbasaur', message(@prolog, pokemon_information, 'Bulbasaur'))),
