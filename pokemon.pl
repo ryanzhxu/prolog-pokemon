@@ -39,7 +39,7 @@ pokemon(torterra, hp, 190).
 pokemon(torterra, attack, 9).
 pokemon(torterra, defense, 15).
 pokemon(torterra, speed, 10).
-pokemon(torterra, move, [earthquake, blazor_leaf, quick_attack, rock_smash]).
+pokemon(torterra, moves, [earthquake, blazor_leaf, quick_attack, rock_smash]).
 
 % index for selecting pokemons
 pokemon_index(1, charmander).
@@ -74,26 +74,45 @@ get_all_pokemons(Pokemons) :-
 :- assertz(file_search_path(pce,swi(xpce))).
 :- use_module(library(pce)).
 
+% Predicate to create the main window and its components
 gui :-
-    new(Window, dialog('Pokemon Information')),
-    send(Window, size, size(400, 200)),
-    new(List, menu(pokemon)),
-    send(List, layout, vertical),
-    send(List, multiple_selection, @off),
-    forall(pokemon(Name, _, _, _, _, _, _),
-           send(List, append, Name)),
-    new(ShowButton, button('Show Information', message(@prolog, show_info, List?selection))),
-    send(Window, append, List),
-    send(Window, append, ShowButton),
-    send(Window, append, button('Quit', message(Window, destroy))),
+    new(Window, dialog('Pokémon Information')),
+    send(Window, append, button('Charmander', message(@prolog, show_pokemon_info, 'Charmander'))),
+    send(Window, append, button('Squirtle', message(@prolog, show_pokemon_info, 'Squirtle'))),
+    send(Window, append, button('Bulbasaur', message(@prolog, show_pokemon_info, 'Bulbasaur'))),
+    send(Window, append, button('Pikachu', message(@prolog, show_pokemon_info, 'Pikachu'))),
+    send(Window, append, button('Charizard', message(@prolog, show_pokemon_info, 'Charizard'))),
+    send(Window, append, button('Torterra', message(@prolog, show_pokemon_info, 'Torterra'))),
+
+    send(Window, append, button('Close', message(Window, destroy))),
+
     send(Window, open),
     event_loop.
 
-show_info(Pokemon) :-
-    pokemon(Pokemon, Type, HP, Attack, Defense, Speed, Moves),
-    format('Name: ~w~nType: ~w~nHP: ~w~nAttack: ~w~nDefense: ~w~nSpeed: ~w~nMoves: ~w~n',
-           [Pokemon, Type, HP, Attack, Defense, Speed, Moves]).
-    
+% Predicate to display the Pokémon information
+show_pokemon_info(PokemonName) :-
+    pokemon_atom_to_lower(PokemonName, LowerPokemonName),
+    pokemon(LowerPokemonName, type, Type),
+    pokemon(LowerPokemonName, hp, HP),
+    pokemon(LowerPokemonName, attack, Attack),
+    pokemon(LowerPokemonName, defense, Defense),
+    pokemon(LowerPokemonName, speed, Speed),
+    pokemon(LowerPokemonName, moves, Moves),
+    format_pokemon_info(PokemonName, Type, HP, Attack, Defense, Speed, Moves, Info),
+    new(InfoDialog, dialog(PokemonName)),
+    send(InfoDialog, append, new(T, text(Info))),
+    send(InfoDialog, append, button('Close', message(InfoDialog, destroy))),
+    send(InfoDialog, open).
+
+
+% Convert the Pokémon name to a lowercase atom
+pokemon_atom_to_lower(PokemonName, LowerPokemonName) :-
+    downcase_atom(PokemonName, LowerPokemonName).
+
+% Format the Pokémon information as a string
+format_pokemon_info(PokemonName, Type, HP, Attack, Defense, Speed, Moves, Info) :-
+    format(string(Info), "Name: ~w\nType: ~w\nHP: ~d\nAttack: ~d\nDefense: ~d\nSpeed: ~d\nMoves: ~w", [PokemonName, Type, HP, Attack, Defense, Speed, Moves]).
+
 event_loop :-
     repeat,
     pce_dispatch,
