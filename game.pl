@@ -6,9 +6,9 @@ go :-
 
 start :-
     get_all_pokemons(Pokemons),
-    player_selects_pokemon(Selection, Pokemons),
+    ((player_selects_pokemon(Selection, Pokemons),
     computer_selects_pokemon(Computer, Pokemons),
-    ((pokemon_index(Selection, Player)) -> 
+    pokemon_index(Selection, Player)) -> 
         get_selected_pokemons_and_hps(Player, PHP, Computer, CHP),
         battle(Player, PHP, Computer, CHP)
     ; writeln('\nNot a valid selection. Please try again.'), start).

@@ -42,11 +42,11 @@ pokemon(torterra, speed, 10).
 pokemon(torterra, move, [earthquake, blazor_leaf, quick_attack, rock_smash]).
 
 % index for selecting pokemons
-pokemon_index(1, charmander).
-pokemon_index(2, squirtle).
-pokemon_index(3, bulbasaur).
+pokemon_index(1, bulbasaur).
+pokemon_index(2, charizard).
+pokemon_index(3, charmander).
 pokemon_index(4, pikachu).
-pokemon_index(5, charizard).
+pokemon_index(5, squirtle).
 pokemon_index(6, torterra).
 
 % select three pokemons

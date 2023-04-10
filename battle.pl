@@ -58,9 +58,10 @@ players_turn(Player, Computer, ComputerHP, NewComputerHP) :-
     write('\nChoose your move:\n\n'),
     print_list_with_index(PlayerMoves, 1),
     read(Selection),
-    select_move(Selection, PlayerMoves, PlayerMove),
+    ((select_move(Selection, PlayerMoves, PlayerMove)) ->
     writeln("\nPlayer's turn:"),
-    attack(Player, Computer, PlayerMove, ComputerHP, NewComputerHP, 1).
+    attack(Player, Computer, PlayerMove, ComputerHP, NewComputerHP, 1)
+    ; writeln('\nNot a valid selection. Please try again.'), players_turn(Player, Computer, ComputerHP, NewComputerHP)).
 
 computers_turn(Computer, Player, PlayerHP, NewPlayerHP) :-
     pokemon(Computer, moves, ComputerMoves),
