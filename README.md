@@ -15,7 +15,7 @@ We'd like to build a BO5 Player vs Computer Pokémon game where each takes turn 
 ### What is the something extra?
 
   - A recommendation system where system would suggest player to pick a specific Pokemon to go against to other player based on elements counter.
-  - GUI?
+  - We have created a simple GUI using library XPCE. It shows 6 buttons of 6 pokemons. Once clicking the button, a new window showing the information of the corresponding pokemon will pop up.
 
 ### What did we learn from doing this?
 
