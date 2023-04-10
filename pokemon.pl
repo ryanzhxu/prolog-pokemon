@@ -70,16 +70,6 @@ user:file_search_path(images, '.').
 gui :-
     new(Window, dialog('Pokémon Information')),
 
-    % Use absolute_file_name/2 to get the absolute path of the image
-    absolute_file_name(images('pokemon.gif'), ImagePath),
-
-    % Load the image and create a bitmap object
-    %new(Image, image(ImagePath)),
-    %new(Image, image('c:/users/feng/desktop/prolog-pokemon-main/pokemon.gif')).
-    %new(Picture, bitmap(Image)),
-    % Append the bitmap object to the main window
-    %send(Window, append, Picture),
-
     send(Window, append, button('Charmander', message(@prolog, pokemon_information, 'Charmander'))),
     send(Window, append, button('Squirtle', message(@prolog, pokemon_information, 'Squirtle'))),
     send(Window, append, button('Bulbasaur', message(@prolog, pokemon_information, 'Bulbasaur'))),
@@ -103,7 +93,7 @@ pokemon_information(PokemonName) :-
     pokemon(LowerPokemonName, moves, Moves),
     format_info(PokemonName, Type, HP, Attack, Defense, Speed, Moves, Info),
     new(InfoDialog, dialog(PokemonName)),
-    send(InfoDialog, append, new(T, text(Info))),
+    send(InfoDialog, append, new(_, text(Info))),
     send(InfoDialog, append, button('Close', message(InfoDialog, destroy))),
     send(InfoDialog, open).
 
