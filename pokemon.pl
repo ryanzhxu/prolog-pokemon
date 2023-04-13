@@ -62,47 +62,48 @@ get_all_pokemons(Pokemons) :-
 :- use_module(library(pce_style_item)).
 :- use_module(library(pce_util)).
 
-:- multifile user:file_search_path/2.
-:- dynamic   user:file_search_path/2.
-user:file_search_path(images, '.').
 
-% Predicate to create the main window and its components
+% Create the main window with some buttons
 gui :-
-    new(Window, dialog('Pokémon Information')),
+    new(Window, dialog('Pokémon Information')), % create a new window
+    % create 6 buttons for 6 pokemons
     send(Window, append, button('Charmander', message(@prolog, pokemon_information, 'Charmander'))),
     send(Window, append, button('Squirtle', message(@prolog, pokemon_information, 'Squirtle'))),
     send(Window, append, button('Bulbasaur', message(@prolog, pokemon_information, 'Bulbasaur'))),
     send(Window, append, button('Pikachu', message(@prolog, pokemon_information, 'Pikachu'))),
     send(Window, append, button('Charizard', message(@prolog, pokemon_information, 'Charizard'))),
     send(Window, append, button('Torterra', message(@prolog, pokemon_information, 'Torterra'))),
-    
+    % create a close button
     send(Window, append, button('Close', message(Window, destroy))),
     send(Window, open),
     event_loop(Window).
 
     
-% display the Pokémon information
+% display the information of corresponding pokemon
 pokemon_information(PokemonName) :-
-    pokemon_to_lower(PokemonName, LowerPokemonName),
+    pokemon_name_to_lower(PokemonName, LowerPokemonName),
     pokemon(LowerPokemonName, type, Type),
     pokemon(LowerPokemonName, hp, HP),
     pokemon(LowerPokemonName, attack, Attack),
     pokemon(LowerPokemonName, defense, Defense),
     pokemon(LowerPokemonName, speed, Speed),
     pokemon(LowerPokemonName, moves, Moves),
+    % show the information of selected pokemon
     format_info(PokemonName, Type, HP, Attack, Defense, Speed, Moves, Info),
-    new(InfoDialog, dialog(PokemonName)),
-    send(InfoDialog, append, new(_, text(Info))),
-    send(InfoDialog, append, button('Close', message(InfoDialog, destroy))),
-    send(InfoDialog, open).
+    new(InformationDialog, dialog(PokemonName)),
+    send(InformationDialog, append, new(_, text(Info))),
+    send(InformationDialog, append, button('Close', message(InformationDialog, destroy))),
+    send(InformationDialog, open).
 
-pokemon_to_lower(PokemonName, LowerPokemonName) :-
+% output the pokemon name in lower case letters
+pokemon_name_to_lower(PokemonName, LowerPokemonName) :-
     downcase_atom(PokemonName, LowerPokemonName).
 
+% format the shown information
 format_info(PokemonName, Type, HP, Attack, Defense, Speed, Moves, Info) :-
     format(string(Info), "Name: ~w\nType: ~w\nHP: ~d\nAttack: ~d\nDefense: ~d\nSpeed: ~d\nMoves: ~w", [PokemonName, Type, HP, Attack, Defense, Speed, Moves]).
 
-
+% prevent the terminal and opened window from being freezing
 event_loop(Window) :-
     repeat,
     (   object(Window)
